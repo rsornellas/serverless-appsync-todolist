@@ -1,0 +1,62 @@
+service: appsync-todolist
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+functions:
+  postConfirmation:
+    handler: index.postConfirmation
+    memorySize: 128
+    timeout: 29
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      DependsOn: PostConfirmationLambdaFunction
+      Properties:
+        UserPoolName: ${self:service}-cognito-pool-${self:custom.stage}
+        AutoVerifiedAttributes:
+          - email
+        LambdaConfig:
+          PostConfirmation:
+            Fn::GetAtt:
+              - PostConfirmationLambdaFunction
+              - Arn
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireUppercase: true
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:service}-client-${self:custom.stage}
+        UserPoolId:
+          Ref: CognitoUserPool
+        GenerateSecret: false
+        ExplicitAuthFlows:
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+          - ALLOW_USER_SRP_AUTH
+
+  Outputs:
+    UserPoolId:
+      Value:
+        Ref: CognitoUserPool
+    UserPoolClientId:
+      Value:
+        Ref: CognitoUserPoolClient
