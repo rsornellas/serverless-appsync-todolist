@@ -30,7 +30,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            npx serverless deploy --stage prod --force
+            npx serverless@3 deploy --stage prod --force
           elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
-            npx serverless deploy --stage dev --force
+            npx serverless@3 deploy --stage dev --force
           fi
