@@ -11,7 +11,7 @@ custom:
 
 functions:
   postConfirmation:
-    handler: index.postConfirmation
+    handler: functions/postConfirmation/handler.postConfirmation
     memorySize: 128
     timeout: 29
 
