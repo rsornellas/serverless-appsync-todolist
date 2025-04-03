@@ -43,20 +43,7 @@ appSync:
         kind: UNIT
         dataSource: todos
         code: mapping-templates/Query.getTodo.js
-        caching:
-          ttl: 60
-          keys:
-            - '$context.arguments.id'
 
-      Mutation.createTodo:
-        kind: UNIT
-        dataSource: todos
-        code: mapping-templates/Mutation.createTodo.js
-
-      Mutation.updateTodo:
-        kind: UNIT
-        dataSource: todos
-        code: mapping-templates/Mutation.updateTodo.js
 
 resources:
   Resources:
