@@ -1,5 +1,5 @@
 export function request(ctx) {
-  const { id, title, description } = ctx.arguments;
+  const { id, title, description } = ctx.args;
   const now = new Date().toISOString();
   
   return {
