@@ -1,12 +1,12 @@
-export function request(ctx) {
+export const request = (ctx) => {
   return {
     operation: 'GetItem',
     key: {
-      id: { S: ctx.arguments.id }
+      id: { S: ctx.args.id }
     }
   };
-}
+};
 
-export function response(ctx) {
+export const response = (ctx) => {
   return ctx.result;
-} 
+}; 

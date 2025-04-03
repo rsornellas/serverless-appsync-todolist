@@ -1,22 +1,22 @@
-export function request(ctx) {
-  const { title, description } = ctx.arguments;
+export const request = (ctx) => {
+  const { title, content } = ctx.args.todo;
   const now = new Date().toISOString();
+  const id = Date.now().toString();
   
   return {
     operation: 'PutItem',
     key: {
-      id: { S: ctx.arguments.id }
+      id: { S: id }
     },
     attributeValues: {
       title: { S: title },
-      description: { S: description },
+      content: { S: content },
       createdAt: { S: now },
-      updatedAt: { S: now },
-      userId: { S: ctx.identity.sub }
+      updatedAt: { S: now }
     }
   };
-}
+};
 
-export function response(ctx) {
+export const response = (ctx) => {
   return ctx.result;
-} 
+}; 
