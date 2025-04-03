@@ -11,7 +11,7 @@ export function request(ctx) {
       expression: 'SET #title = :title, #description = :description, #updatedAt = :updatedAt',
       expressionNames: {
         '#title': 'title',
-        '#description': 'description',
+        '#description': 'description', 
         '#updatedAt': 'updatedAt'
       },
       expressionValues: {
@@ -19,7 +19,8 @@ export function request(ctx) {
         ':description': { S: description },
         ':updatedAt': { S: now }
       }
-    }
+    },
+    returnValues: 'ALL_NEW'
   };
 }
 
