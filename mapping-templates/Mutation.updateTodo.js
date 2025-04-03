@@ -1,24 +1,21 @@
 export function request(ctx) {
-  const { id, title, description } = ctx.args;
+  const { id, title, content } = ctx.args.input;
   const now = new Date().toISOString();
-  
+
   return {
     operation: 'UpdateItem',
     key: {
       id: { S: id }
     },
-    update: {
-      expression: 'SET #title = :title, #description = :description, #updatedAt = :updatedAt',
-      expressionNames: {
-        '#title': 'title',
-        '#description': 'description', 
-        '#updatedAt': 'updatedAt'
-      },
-      expressionValues: {
-        ':title': { S: title },
-        ':description': { S: description },
-        ':updatedAt': { S: now }
-      }
+    updateExpression: 'SET #title = :title, #content = :content, #updatedAt = :updatedAt',
+    expressionAttributeNames: {
+      '#title': 'title',
+      '#content': 'content'
+    },
+    expressionAttributeValues: {
+      ':title': { S: title },
+      ':content': { S: content },
+      ':updatedAt': { S: now }
     },
     returnValues: 'ALL_NEW'
   };
