@@ -44,7 +44,6 @@ appSync:
         dataSource: todos
         code: mapping-templates/Query.getTodo.js
     - Mutation.createTodo:
-        kind: UNIT
         dataSource: todos
         code: mapping-templates/createTodo.js
 
