@@ -46,7 +46,7 @@ appSync:
     - Mutation.createTodo:
         kind: UNIT
         dataSource: todos
-        code: mapping-templates/Mutation.createTodo.js
+        code: mapping-templates/createTodo.js
 
 
 resources:
