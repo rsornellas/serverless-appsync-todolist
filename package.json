@@ -12,5 +12,9 @@
   "description": "",
   "devDependencies": {
     "serverless": "^3.40.0"
+  },
+  "dependencies": {
+    "graceful-fs": "^4.2.11",
+    "serverless-appsync-plugin": "^2.9.1"
   }
 }

@@ -1,5 +1,8 @@
 service: appsync-todolist
 
+plugins:
+  - serverless-appsync-plugin
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -15,8 +18,60 @@ functions:
     memorySize: 128
     timeout: 29
 
+appSync:
+  name: todos-api
+
+  logging:
+    level: ALL
+
+  xrayEnabled: false
+
+  authentication:
+    type: AMAZON_COGNITO_USER_POOLS
+    config:
+      userPoolId: !Ref CognitoUserPool
+      defaultAction: ALLOW
+
+  dataSources:
+    todos:
+      type: AMAZON_DYNAMODB
+      config:
+        tableName: !Ref Todos
+
+  resolvers:
+    - Query.getTodo:
+        kind: UNIT
+        dataSource: todos
+        code: mapping-templates/Query.getTodo.js
+        caching:
+          ttl: 60
+          keys:
+            - '$context.arguments.id'
+
+      Mutation.createTodo:
+        kind: UNIT
+        dataSource: todos
+        code: mapping-templates/Mutation.createTodo.js
+
+      Mutation.updateTodo:
+        kind: UNIT
+        dataSource: todos
+        code: mapping-templates/Mutation.updateTodo.js
+
 resources:
   Resources:
+    Todos:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: todos
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       DependsOn: PostConfirmationLambdaFunction
