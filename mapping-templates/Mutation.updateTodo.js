@@ -8,13 +8,13 @@ export function request(ctx) {
       id: { S: id }
     },
     update: {
-      UpdateExpression: 'SET #title = :title, #description = :description, #updatedAt = :updatedAt',
-      ExpressionAttributeNames: {
+      expression: 'SET #title = :title, #description = :description, #updatedAt = :updatedAt',
+      expressionNames: {
         '#title': 'title',
         '#description': 'description',
         '#updatedAt': 'updatedAt'
       },
-      ExpressionAttributeValues: {
+      expressionValues: {
         ':title': { S: title },
         ':description': { S: description },
         ':updatedAt': { S: now }
@@ -25,4 +25,4 @@ export function request(ctx) {
 
 export function response(ctx) {
   return ctx.result;
-} 
+}
